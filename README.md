@@ -130,4 +130,5 @@ Meeting every 2 weeks until January then more intensive
 - [x] GCN 
 - [x] GAT
 - [x] GraphSAGE
-- :white_check_mark: test
+- :white_check_mark: test  
+:white_check_mark: test
