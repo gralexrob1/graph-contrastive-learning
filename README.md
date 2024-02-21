@@ -123,3 +123,10 @@ proposes abstraction that were shown in the slides of presentation
 Invest time on code  
 GBL Deepmind  
 Meeting every 2 weeks until January then more intensive
+
+
+# Follow-up
+
+- [x] GCN 
+- [x] GAT
+- [x] GraphSAGE
