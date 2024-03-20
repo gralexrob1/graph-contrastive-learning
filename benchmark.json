@@ -1,0 +1,38 @@
+{
+  "strategies": [
+      {
+        "name": "Default",
+        "strategy":"DualBranch",
+        "mode": "L2L",
+        "augmentations": [
+          "EdgeRemoving",
+          "FeatureMasking",
+          "NodeDropping"
+        ],
+        "negative": null,
+        "architecture": [
+          "DefaultGNN"
+        ],
+        "epochs": 1000,
+        "objective": "InfoNCE"
+      },
+      {
+        "name": "Default - JSD",
+        "strategy":"DualBranch",
+        "mode": "L2L",
+        "augmentations": [
+          "EdgeRemoving",
+          "FeatureMasking",
+          "NodeDropping"
+        ],
+        "negative": null,
+        "architecture": [
+          "DefaultGNN"
+        ],
+        "epochs": 1000,
+        "objective": "JSD"
+      }
+    ]
+}
+
+
