@@ -1,0 +1,21 @@
+{
+  "strategies": [
+      {
+        "dataset": "Cora",
+        "method": "DGItransductive",
+        "architecture":"SingleBranch",
+        "mode": "G2L",
+        "augmentations": null,
+        "negative": null,
+        "objective": "JSD",
+        "train_params": {
+          "epochs": 300
+        }
+      }
+    ],
+  "config": {
+    "try_gpu": true
+  }
+}
+
+
