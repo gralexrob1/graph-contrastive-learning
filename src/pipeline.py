@@ -4,8 +4,10 @@ import json
 import GCL.models as M
 import GCL.augmentors as A
 import GCL.losses as L
+from GCL.eval import get_split, LREvaluator
 
 import torch
+import torch.nn as nn
 
 from torch.optim import Adam
 from torch_geometric.datasets import Planetoid
@@ -22,11 +24,13 @@ class GCLPipeline:
         self.negative = negative
         self.contrast_model = contrast_model
 
+    @staticmethod
     def init_dataset(dataset_name, data_path, transform=None):
         if dataset_name == "Cora":
             dataset = Planetoid(data_path, dataset_name, transform=transform)
         return dataset
 
+    @staticmethod
     def init_objective(objective_name):
         match objective_name:
             case "InfoNCE":
@@ -44,6 +48,7 @@ class GCLPipeline:
             case _:
                 raise NameError(f"Unknown objective name: {objective_name}")
 
+    @staticmethod
     def init_contrast_model(architecture_name, objective, mode):
         match architecture_name:
             case "SingleBranch":
@@ -57,6 +62,7 @@ class GCLPipeline:
             case _:
                 raise NameError(f"Unknown strategy name: {architecture_name}")
 
+    @staticmethod
     def init_augmentation(augmentation_name):
         match augmentation_name:
             case "EdgeAdding":
@@ -85,13 +91,84 @@ class GCLPipeline:
                 raise NameError(
                     f"Unknown augmentation name: {augmentation_name}")
 
+    @staticmethod
+    def init_augmentations(augmentation_names, augmentation_strategy):
+
+        if isinstance(augmentation_names, list):
+            augmentations = []
+            for augmentation_name in augmentation_names:
+                augmentations.append(
+                    GCLPipeline.init_augmentation(augmentation_name)
+                )
+            match augmentation_strategy:
+                case "Random": return A.Random(augmentations)
+                case "Compose": return A.Compose(augmentations)
+        else:
+            return GCLPipeline.init_augmentation(augmentation_name)
+
+    @classmethod
+    def from_strategy(cls, strategy):
+
+        method_name = strategy["method"]
+        architecture_name = strategy["architecture"]
+        mode_name = strategy["mode"]
+        negative_name = strategy["negative"]
+        objective_name = strategy["objective"]
+
+        augmentation1_names = strategy["augmentation1"]
+        augmentation1_strategy = strategy["augmentation1_strat"]
+        augmentation2_names = strategy["augmentation2"]
+        augmentation2_strategy = strategy["augmentation1_strat"]
+
+        assert not (architecture_name == "SingleBranch" and mode_name != "G2L")
+        assert not (
+            architecture_name in ["DualBranch", "Bootstrap"]
+            and mode_name not in ["L2L", "G2G", "G2L"]
+        )
+        assert not (
+            architecture_name == "WithinEmbedding" and mode_name not in [
+                "L2L", "G2G"]
+        )
+
+        objective = GCLPipeline.init_objective(objective_name)
+        contrast_model = GCLPipeline.init_contrast_model(
+            architecture_name,
+            objective,
+            mode_name,
+        )
+
+        augmentations = [
+            GCLPipeline.init_augmentations(
+                augmentation1_names, augmentation1_strategy
+            ) if augmentation1_names is not None else None,
+            GCLPipeline.init_augmentations(
+                augmentation2_names, augmentation2_strategy
+            ) if augmentation2_names is not None else None
+        ]
+
+        instance = cls(method_name, contrast_model,
+                       augmentations, negative_name)
+
+        return instance
+
     def init_encoder(self, params):
 
         input_dim = params["input_dim"]
         hidden_dim = params["hidden_dim"]
         num_layers = params["num_layers"]
-        activation = params["activation"]
         proj_dim = params["proj_dim"]
+
+        # Activation
+        if params["activation"] is None:
+            activation = None
+        else:
+            activation = getattr(
+                torch.nn, params["activation"],
+                ValueError(
+                    f"Activation function '{params['activation']}' not found in torch.nn")
+            )
+
+        # Device
         device = params["device"]
 
         len_augmentations = len(self.augmentations)
@@ -133,62 +210,42 @@ class GCLPipeline:
             case _:
                 raise NotImplementedError
 
-    @classmethod
-    def from_strategy(cls, strategy):
+    def train_epoch(self, encoder_model, data, optimizer, device):
 
-        method_name = strategy["method"]
-        architecture_name = strategy["architecture"]
-        mode_name = strategy["mode"]
-        augmentation1_name = strategy["augmentation1"]
-        augmentation2_name = strategy["augmentation2"]
-        negative_name = strategy["negative"]
-        objective_name = strategy["objective"]
+        encoder_model.train()
+        optimizer.zero_grad()
 
-        assert not (architecture_name == "SingleBranch" and mode_name != "G2L")
-        assert not (
-            architecture_name in ["DualBranch", "Bootstrap"]
-            and mode_name not in ["L2L", "G2G", "G2L"]
+        match self.method:
+
+            case "TransductiveDGI":
+                z, g, zn = encoder_model(data.x, data.edge_index)
+                loss = self.contrast_model(h=z, g=g, hn=zn)
+
+            case "GRACE":
+                _, z1, z2 = encoder_model(
+                    data.x, data.edge_index, data.edge_attr)
+                h1, h2 = [encoder_model.project(x) for x in [z1, z2]]
+                loss = self.contrast_model(h1, h2)
+
+        loss.backward()
+        optimizer.step()
+
+        return loss.item()
+
+    def test(self, encoder_model, data):
+
+        encoder_model.eval()
+
+        z, _, _ = encoder_model(data.x, data.edge_index)
+        split = get_split(
+            num_samples=z.size()[0],
+            train_ratio=0.1, test_ratio=0.8
         )
-        assert not (
-            architecture_name == "WithinEmbedding" and mode_name not in [
-                "L2L", "G2G"]
-        )
+        result = LREvaluator()(z, data.y, split)
 
-        objective = GCLPipeline.init_objective(objective_name)
-        contrast_model = GCLPipeline.init_contrast_model(
-            architecture_name,
-            objective,
-            mode_name,
-        )
+        return result
 
-        augmentations = []
-        if augmentation1_name is not None:
-            augmentation1 = A.RandomChoice(
-                [GCLPipeline.init_augmentation(aug)
-                 for aug in augmentation1_name],
-                1,
-            )
-            augmentations.append(augmentation1)
-        if augmentation2_name is not None:
-            augmentation2 = A.RandomChoice(
-                [GCLPipeline.init_augmentation(aug)
-                 for aug in augmentation2_name],
-                1,
-            )
-            augmentations.append(augmentation2)
-
-        instance = cls(method_name, contrast_model,
-                       augmentations, negative_name)
-
-        return instance
-
-    def train(self, dataset, encoder_model, params):
-
-        batch_flag = params["batch_flag"]
-        device = params["device"]
-
-    def test(self, encoder_model, dataloader):
-
+    def train(self, dataloader, encoder_model, optimizer):
         raise NotImplementedError
 
     def evaluate(self):

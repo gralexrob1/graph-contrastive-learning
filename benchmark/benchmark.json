@@ -7,26 +7,57 @@
   "strategies": [
       {
         "dataset": "Cora",
-        "method": "InductiveDGI",
+
+        "method": "TransductiveDGI",
         "architecture":"SingleBranch",
         "mode": "G2L",
         "objective": "JSD",
         "negative": null,
 
         "augmentation1": null,
-        "augmentation1_agg": "Compose", 
+        "augmentation1_strat": "Compose", 
         "augmentation2": null,
-        "augmentation2_agg": "Random", 
+        "augmentation2_strat": "Random", 
 
         "encoder_params": {
           "hidden_dim": 512,
-          "num_layers": 3,
+          "num_layers": 2,
           "proj_dim": null,
           "activation": null
         },
 
         "train_params": {
-          "epochs": 300
+          "learning_rate": 0.01,
+          "epochs": 300,
+          "batch_size": null
+        }
+      },
+
+      {
+        "dataset": "Cora",
+
+        "method": "GRACE",
+        "architecture":"DualBranch",
+        "mode": "L2L",
+        "objective": "InfoNCE",
+        "negative": null,
+
+        "augmentation1": ["EdgeRemoving", "FeatureMasking"],
+        "augmentation1_strat": "Compose", 
+        "augmentation2": ["EdgeRemoving", "FeatureMasking"],
+        "augmentation2_strat": "Compose", 
+
+        "encoder_params": {
+          "hidden_dim": 32,
+          "num_layers": 2,
+          "proj_dim": 32,
+          "activation": "ReLU"
+        },
+
+        "train_params": {
+          "learning_rate": 0.01,
+          "epochs": 1000,
+          "batch_size": null
         }
       }
     ],
@@ -34,16 +65,48 @@
 
   "_strategies": [
     {
-      "_dataset": ["Cora"],
-      "_method":["InductiveDGI", "TransductiveDGI", "GRACE"],
-      "_architecture": ["SingleBranch", "DualBranch", "BootstrapBranch", "WithinEmbed"],
-      "_mode": ["L2L", "G2L", "G2G"],
-      "_augmentation1": null,
-      "_augmentation1_agg": ["Compose", "Random"],
-      "_augmentation2": null,
-      "_augmentation2_agg": ["Compose", "Random"],
+      "_dataset": [
+        "Cora"
+      ],
+      "_method":[
+        "InductiveDGI", 
+        "TransductiveDGI", 
+        "GRACE"
+      ],
+      "_architecture": [
+        "SingleBranch", 
+        "DualBranch", 
+        "BootstrapBranch", 
+        "WithinEmbed"
+      ],
+      "_mode": [
+        "L2L", 
+        "G2L", 
+        "G2G"
+      ],
       "_negative": null,
-      "_objective": ["JSD"]
+      "_objective": [
+        "InfoNCE",
+        "JSD"
+      ],
+
+      "_augmentation1": [
+        "EdgeRemoving", 
+        "FeatureMasking"
+      ],
+      "_augmentation1_agg": [
+        "Compose", 
+        "Random"
+      ],
+      "_augmentation2": [
+        "EdgeRemoving", 
+        "FeatureMasking"
+      ],
+      "_augmentation2_agg": [
+        "Compose", 
+        "Random"
+      ]
+
     }
   ]
 
