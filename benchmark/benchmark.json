@@ -1,21 +1,53 @@
 {
+  "config": {
+    "try_gpu": true
+  },
+
+
   "strategies": [
       {
         "dataset": "Cora",
-        "method": "DGItransductive",
+        "method": "InductiveDGI",
         "architecture":"SingleBranch",
         "mode": "G2L",
-        "augmentations": null,
-        "negative": null,
         "objective": "JSD",
+        "negative": null,
+
+        "augmentation1": null,
+        "augmentation1_agg": "Compose", 
+        "augmentation2": null,
+        "augmentation2_agg": "Random", 
+
+        "encoder_params": {
+          "hidden_dim": 512,
+          "num_layers": 3,
+          "proj_dim": null,
+          "activation": null
+        },
+
         "train_params": {
           "epochs": 300
         }
       }
     ],
-  "config": {
-    "try_gpu": true
-  }
+
+
+  "_strategies": [
+    {
+      "_dataset": ["Cora"],
+      "_method":["InductiveDGI", "TransductiveDGI", "GRACE"],
+      "_architecture": ["SingleBranch", "DualBranch", "BootstrapBranch", "WithinEmbed"],
+      "_mode": ["L2L", "G2L", "G2G"],
+      "_augmentation1": null,
+      "_augmentation1_agg": ["Compose", "Random"],
+      "_augmentation2": null,
+      "_augmentation2_agg": ["Compose", "Random"],
+      "_negative": null,
+      "_objective": ["JSD"]
+    }
+  ]
+
+
 }
 
 
