@@ -160,6 +160,7 @@ cython_debug/
 #.idea/
 
 # Data
+data/
 data/LR_PPI/processed_old_version/
 data/LR_PPI/processed_as_dict/
 data/LR_PPI/processed/
