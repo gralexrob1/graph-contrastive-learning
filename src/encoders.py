@@ -4,6 +4,11 @@ import torch.nn.functional as F
 from torch_geometric.nn import inits
 
 
+"""
+DGI
+"""
+
+
 class DGIEncoder(torch.nn.Module):
     def __init__(self, encoder, hidden_dim):
         super(DGIEncoder, self).__init__()
@@ -20,6 +25,11 @@ class DGIEncoder(torch.nn.Module):
         g = self.project(torch.sigmoid(z.mean(dim=0, keepdim=True)))
         zn = self.encoder(*self.corruption(x, edge_index))
         return z, g, zn
+
+
+"""
+GRACE
+"""
 
 
 class GRACEEncoder(torch.nn.Module):
@@ -43,3 +53,23 @@ class GRACEEncoder(torch.nn.Module):
     def project(self, z: torch.Tensor) -> torch.Tensor:
         z = F.elu(self.fc1(z))
         return self.fc2(z)
+
+
+"""
+InfoGraph
+"""
+
+
+class InfoGraphEncoder(torch.nn.Module):
+    def __init__(self, encoder, local_fc, global_fc):
+        super(InfoGraphEncoder, self).__init__()
+        self.encoder = encoder
+        self.local_fc = local_fc
+        self.global_fc = global_fc
+
+    def forward(self, x, edge_index, batch):
+        z, g = self.encoder(x, edge_index, batch)
+        return z, g
+
+    def project(self, z, g):
+        return self.local_fc(z), self.global_fc(g)

@@ -4,13 +4,15 @@ import json
 import GCL.models as M
 import GCL.augmentors as A
 import GCL.losses as L
-from GCL.eval import get_split, LREvaluator
+from GCL.eval import get_split, LREvaluator, SVMEvaluator
+
 
 import torch
 import torch.nn as nn
 
 from torch.optim import Adam
-from torch_geometric.datasets import Planetoid
+from torch_geometric.loader import DataLoader
+from torch_geometric.datasets import Planetoid, TUDataset
 
 from gconv import *
 from encoders import *
@@ -18,17 +20,35 @@ from encoders import *
 
 class GCLPipeline:
     def __init__(self, method, contrast_model, augmentations, negative):
-
         self.method = method
         self.augmentations = augmentations
         self.negative = negative
         self.contrast_model = contrast_model
 
     @staticmethod
-    def init_dataset(dataset_name, data_path, transform=None):
-        if dataset_name == "Cora":
-            dataset = Planetoid(data_path, dataset_name, transform=transform)
-        return dataset
+    def init_dataset(dataset_name, data_path, transform=None, batch_size=False):
+
+        print("Dataset initialization")
+
+        match dataset_name:
+
+            case "Cora":
+                dataset = Planetoid(data_path, dataset_name, transform=transform)
+                num_features = dataset.num_features
+                if batch_size > 0:
+                    pass
+                else:
+                    dataset = dataset[0]
+
+            case "PTC-MR" | "PTC_MR":
+                dataset = TUDataset(data_path, "PTC_MR")
+                num_features = dataset.num_features
+                if batch_size > 0:
+                    dataset = DataLoader(dataset, batch_size=batch_size)
+
+        print(f"\t # features: {num_features}")
+
+        return dataset, num_features
 
     @staticmethod
     def init_objective(objective_name):
@@ -88,8 +108,7 @@ class GCLPipeline:
             case "EgoNet":
                 return A.Identity()
             case _:
-                raise NameError(
-                    f"Unknown augmentation name: {augmentation_name}")
+                raise NameError(f"Unknown augmentation name: {augmentation_name}")
 
     @staticmethod
     def init_augmentations(augmentation_names, augmentation_strategy):
@@ -97,19 +116,22 @@ class GCLPipeline:
         if isinstance(augmentation_names, list):
             augmentations = []
             for augmentation_name in augmentation_names:
-                augmentations.append(
-                    GCLPipeline.init_augmentation(augmentation_name)
-                )
+                augmentations.append(GCLPipeline.init_augmentation(augmentation_name))
             match augmentation_strategy:
-                case "Random": return A.Random(augmentations)
-                case "Compose": return A.Compose(augmentations)
+                case "Random":
+                    return A.Random(augmentations)
+                case "Compose":
+                    return A.Compose(augmentations)
         else:
             return GCLPipeline.init_augmentation(augmentation_name)
 
     @classmethod
-    def from_strategy(cls, strategy):
+    def from_strategy(cls, strategy, device):
 
         method_name = strategy["method"]
+
+        print(f"##### {method_name} #####")
+
         architecture_name = strategy["architecture"]
         mode_name = strategy["mode"]
         negative_name = strategy["negative"]
@@ -126,8 +148,7 @@ class GCLPipeline:
             and mode_name not in ["L2L", "G2G", "G2L"]
         )
         assert not (
-            architecture_name == "WithinEmbedding" and mode_name not in [
-                "L2L", "G2G"]
+            architecture_name == "WithinEmbedding" and mode_name not in ["L2L", "G2G"]
         )
 
         objective = GCLPipeline.init_objective(objective_name)
@@ -135,46 +156,57 @@ class GCLPipeline:
             architecture_name,
             objective,
             mode_name,
-        )
+        ).to(device)
 
         augmentations = [
-            GCLPipeline.init_augmentations(
-                augmentation1_names, augmentation1_strategy
-            ) if augmentation1_names is not None else None,
-            GCLPipeline.init_augmentations(
-                augmentation2_names, augmentation2_strategy
-            ) if augmentation2_names is not None else None
+            (
+                GCLPipeline.init_augmentations(
+                    augmentation1_names, augmentation1_strategy
+                )
+                if augmentation1_names is not None
+                else None
+            ),
+            (
+                GCLPipeline.init_augmentations(
+                    augmentation2_names, augmentation2_strategy
+                )
+                if augmentation2_names is not None
+                else None
+            ),
         ]
 
-        instance = cls(method_name, contrast_model,
-                       augmentations, negative_name)
+        instance = cls(method_name, contrast_model, augmentations, negative_name)
 
         return instance
 
-    def init_encoder(self, params):
+    def init_encoder(self, params, device):
+
+        print(f"Encoder initialization")
 
         input_dim = params["input_dim"]
         hidden_dim = params["hidden_dim"]
         num_layers = params["num_layers"]
         proj_dim = params["proj_dim"]
 
-        # Activation
         if params["activation"] is None:
             activation = None
         else:
             activation = getattr(
-                torch.nn, params["activation"],
+                torch.nn,
+                params["activation"],
                 ValueError(
-                    f"Activation function '{params['activation']}' not found in torch.nn")
+                    f"Activation function '{params['activation']}' not found in torch.nn"
+                ),
             )
 
-        # Device
-        device = params["device"]
+        print(f"\t input dim: {input_dim}")
+        print(f"\t hidden dim: {hidden_dim}")
+        print(f"\t # layers: {num_layers}")
+        print(f"\t projection dim: {proj_dim}")
+        print(f"\t activation: {activation}")
 
-        len_augmentations = len(self.augmentations)
-        augmentor1 = None if not self.augmentations else self.augmentations[0]
-        augmentor2 = None if len_augmentations == 1 or augmentor1 is None else self.augmentations[
-            1]
+        augmentor1 = self.augmentations[0]
+        augmentor2 = self.augmentations[1]
 
         match self.method:
 
@@ -182,66 +214,163 @@ class GCLPipeline:
                 gconv = DGIInductiveGConv(
                     input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers
                 ).to(device)
-                encoder_model = DGIEncoder(
-                    encoder=gconv, hidden_dim=hidden_dim
-                ).to(device)
-                return encoder_model
+                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(
+                    device
+                )
 
             case "TransductiveDGI":
                 gconv = DGITransductiveGConv(
                     input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers
                 ).to(device)
-                encoder_model = DGIEncoder(
-                    encoder=gconv, hidden_dim=hidden_dim
-                ).to(device)
-                return encoder_model
+                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(
+                    device
+                )
 
             case "GRACE":
                 gconv = GRACEGConv(
-                    input_dim=input_dim, hidden_dim=hidden_dim,
-                    activation=activation, num_layers=num_layers,
+                    input_dim=input_dim,
+                    hidden_dim=hidden_dim,
+                    activation=activation,
+                    num_layers=num_layers,
                 ).to(device)
                 encoder_model = GRACEEncoder(
-                    encoder=gconv, augmentor=(augmentor1, augmentor2),
-                    hidden_dim=hidden_dim, proj_dim=proj_dim
+                    encoder=gconv,
+                    augmentor=(augmentor1, augmentor2),
+                    hidden_dim=hidden_dim,
+                    proj_dim=proj_dim,
                 ).to(device)
-                return encoder_model
+
+            case "InfoGraph":
+                gconv = InfoGraphGConv(
+                    input_dim=input_dim,
+                    hidden_dim=hidden_dim,
+                    activation=activation,
+                    num_layers=num_layers,
+                ).to(device)
+                fc1 = FC(hidden_dim=hidden_dim * 2)
+                fc2 = FC(hidden_dim=hidden_dim * 2)
+                encoder_model = InfoGraphEncoder(
+                    encoder=gconv, local_fc=fc1, global_fc=fc2
+                ).to(device)
 
             case _:
                 raise NotImplementedError
 
-    def train_epoch(self, encoder_model, data, optimizer, device):
+        return encoder_model
+
+    def train_epoch(self, encoder_model, dataset, optimizer, device):
+        """
+        Train for 1 epoch
+
+        dataset parameter can be a dataset or a dataloader
+        """
 
         encoder_model.train()
-        optimizer.zero_grad()
 
         match self.method:
 
             case "TransductiveDGI":
-                z, g, zn = encoder_model(data.x, data.edge_index)
+                optimizer.zero_grad()
+                z, g, zn = encoder_model(
+                    dataset.x.to(device), dataset.edge_index.to(device)
+                )
                 loss = self.contrast_model(h=z, g=g, hn=zn)
+                loss.backward()
+                optimizer.step()
+                epoch_loss = loss.item()
 
             case "GRACE":
+                optimizer.zero_grad()
                 _, z1, z2 = encoder_model(
-                    data.x, data.edge_index, data.edge_attr)
+                    dataset.x.to(device),
+                    dataset.edge_index.to(device),
+                    (
+                        dataset.edge_attr.to(device)
+                        if dataset.edge_attr is not None
+                        else None
+                    ),
+                )
                 h1, h2 = [encoder_model.project(x) for x in [z1, z2]]
                 loss = self.contrast_model(h1, h2)
+                loss.backward()
+                optimizer.step()
+                epoch_loss = loss.item()
 
-        loss.backward()
-        optimizer.step()
+            case "InfoGraph":
+                epoch_loss = 0
+                for data in dataset:
+                    data = data.to(device)
+                    optimizer.zero_grad()
 
-        return loss.item()
+                    if data.x is None:
+                        num_nodes = data.batch.size(0)
+                        data.x = torch.ones(
+                            (num_nodes, 1),
+                            dtype=torch.float32,
+                            device=data.batch.device,
+                        )
 
-    def test(self, encoder_model, data):
+                    z, g = encoder_model(data.x, data.edge_index, data.batch)
+                    z, g = encoder_model.project(z, g)
+                    loss = self.contrast_model(h=z, g=g, batch=data.batch)
+                    loss.backward()
+                    optimizer.step()
+                    epoch_loss += loss.item()
+
+        return epoch_loss
+
+    def test(self, encoder_model, dataset, device):
 
         encoder_model.eval()
 
-        z, _, _ = encoder_model(data.x, data.edge_index)
-        split = get_split(
-            num_samples=z.size()[0],
-            train_ratio=0.1, test_ratio=0.8
-        )
-        result = LREvaluator()(z, data.y, split)
+        match self.method:
+
+            case "TransductiveDGI":
+                z, _, _ = encoder_model(
+                    dataset.x.to(device), dataset.edge_index.to(device)
+                )
+                split = get_split(
+                    num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8
+                )
+                result = LREvaluator()(z, dataset.y, split)
+
+            case "GRACE":
+                z, _, _ = encoder_model(
+                    dataset.x.to(device),
+                    dataset.edge_index.to(device),
+                    (
+                        dataset.edge_attr.to(device)
+                        if dataset.edge_attr is not None
+                        else None
+                    ),
+                )
+                split = get_split(
+                    num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8
+                )
+                result = LREvaluator()(z, dataset.y, split)
+
+            case "InfoGraph":
+                x = []
+                y = []
+                for data in dataset:
+                    data = data.to(device)
+                    if data.x is None:
+                        num_nodes = data.batch.size(0)
+                        data.x = torch.ones(
+                            (num_nodes, 1),
+                            dtype=torch.float32,
+                            device=data.batch.device,
+                        )
+                    z, g = encoder_model(data.x, data.edge_index, data.batch)
+                    x.append(g)
+                    y.append(data.y)
+                x = torch.cat(x, dim=0)
+                y = torch.cat(y, dim=0)
+
+                split = get_split(
+                    num_samples=x.size()[0], train_ratio=0.8, test_ratio=0.1
+                )
+                result = SVMEvaluator(linear=True)(x, y, split)
 
         return result
 
