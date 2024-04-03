@@ -167,3 +167,7 @@ data/LR_PPI/processed/
 
 data/LR_PPI_small/processed_old_version/
 data/LR_PPI_small/processed_as_dict/
+
+dataset/
+
+notebooks/dataset/*
