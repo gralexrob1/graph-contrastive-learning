@@ -38,7 +38,7 @@ def main():
         sparse=True,
     ).to(device)
 
-    loader = model.loader(batch_size=args.batch_size, shuffle=True, num_workers=0)
+    loader = model.loader(batch_size=args.batch_size, shuffle=True, num_workers=4)
     optimizer = torch.optim.SparseAdam(list(model.parameters()), lr=args.lr)
 
     model.train()
