@@ -1,3 +1,4 @@
 Data,Method,Archi,Mode,Obj,Neg,Aug1,Aug1Strat,Aug2,Aug2Strat,MicroF1,MacroF1
 PTC_MR,InfoGraph,SingleBranch,G2L,JSD,,,,,,0.66,0.65
 Cora,TransductiveDGI,SingleBranch,G2L,JSD,,,Compose,,,0.83,0.77
+PTC_MR,GraphCL,DualBranch,G2G,InfoNCE,,Identity,,"RWSampling, NodeDropping, FeatureMasking, EdgeRemoving",Random,0.51,0.49
