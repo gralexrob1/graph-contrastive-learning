@@ -1,21 +1,19 @@
-import os.path as osp
-import json
-
-import GCL.models as M
 import GCL.augmentors as A
 import GCL.losses as L
-from GCL.eval import get_split, LREvaluator, SVMEvaluator
-
-
+import GCL.models as M
 import torch
-import torch.nn as nn
-
-from torch.optim import Adam
-from torch_geometric.loader import DataLoader
+from GCL.eval import LREvaluator, SVMEvaluator, get_split
 from torch_geometric.datasets import Planetoid, TUDataset
+from torch_geometric.loader import DataLoader
 
-from gconv import *
-from encoders import *
+from encoders import DGIEncoder, GRACEEncoder, InfoGraphEncoder
+from gconv import (
+    FC,
+    DGIInductiveGConv,
+    DGITransductiveGConv,
+    GRACEGConv,
+    InfoGraphGConv,
+)
 
 
 class GCLPipeline:
@@ -119,7 +117,7 @@ class GCLPipeline:
                 augmentations.append(GCLPipeline.init_augmentation(augmentation_name))
             match augmentation_strategy:
                 case "Random":
-                    return A.Random(augmentations)
+                    return A.RandomChoice(augmentations)
                 case "Compose":
                     return A.Compose(augmentations)
         else:
@@ -147,9 +145,7 @@ class GCLPipeline:
             architecture_name in ["DualBranch", "Bootstrap"]
             and mode_name not in ["L2L", "G2G", "G2L"]
         )
-        assert not (
-            architecture_name == "WithinEmbedding" and mode_name not in ["L2L", "G2G"]
-        )
+        assert not (architecture_name == "WithinEmbedding" and mode_name not in ["L2L", "G2G"])
 
         objective = GCLPipeline.init_objective(objective_name)
         contrast_model = GCLPipeline.init_contrast_model(
@@ -160,16 +156,12 @@ class GCLPipeline:
 
         augmentations = [
             (
-                GCLPipeline.init_augmentations(
-                    augmentation1_names, augmentation1_strategy
-                )
+                GCLPipeline.init_augmentations(augmentation1_names, augmentation1_strategy)
                 if augmentation1_names is not None
                 else None
             ),
             (
-                GCLPipeline.init_augmentations(
-                    augmentation2_names, augmentation2_strategy
-                )
+                GCLPipeline.init_augmentations(augmentation2_names, augmentation2_strategy)
                 if augmentation2_names is not None
                 else None
             ),
@@ -181,7 +173,7 @@ class GCLPipeline:
 
     def init_encoder(self, params, device):
 
-        print(f"Encoder initialization")
+        print("Encoder initialization")
 
         input_dim = params["input_dim"]
         hidden_dim = params["hidden_dim"]
@@ -194,9 +186,7 @@ class GCLPipeline:
             activation = getattr(
                 torch.nn,
                 params["activation"],
-                ValueError(
-                    f"Activation function '{params['activation']}' not found in torch.nn"
-                ),
+                ValueError(f"Activation function '{params['activation']}' not found in torch.nn"),
             )
 
         print(f"\t input dim: {input_dim}")
@@ -214,17 +204,13 @@ class GCLPipeline:
                 gconv = DGIInductiveGConv(
                     input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers
                 ).to(device)
-                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(
-                    device
-                )
+                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(device)
 
             case "TransductiveDGI":
                 gconv = DGITransductiveGConv(
                     input_dim=input_dim, hidden_dim=hidden_dim, num_layers=num_layers
                 ).to(device)
-                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(
-                    device
-                )
+                encoder_model = DGIEncoder(encoder=gconv, hidden_dim=hidden_dim).to(device)
 
             case "GRACE":
                 gconv = GRACEGConv(
@@ -249,9 +235,9 @@ class GCLPipeline:
                 ).to(device)
                 fc1 = FC(hidden_dim=hidden_dim * 2)
                 fc2 = FC(hidden_dim=hidden_dim * 2)
-                encoder_model = InfoGraphEncoder(
-                    encoder=gconv, local_fc=fc1, global_fc=fc2
-                ).to(device)
+                encoder_model = InfoGraphEncoder(encoder=gconv, local_fc=fc1, global_fc=fc2).to(
+                    device
+                )
 
             case _:
                 raise NotImplementedError
@@ -271,9 +257,7 @@ class GCLPipeline:
 
             case "TransductiveDGI":
                 optimizer.zero_grad()
-                z, g, zn = encoder_model(
-                    dataset.x.to(device), dataset.edge_index.to(device)
-                )
+                z, g, zn = encoder_model(dataset.x.to(device), dataset.edge_index.to(device))
                 loss = self.contrast_model(h=z, g=g, hn=zn)
                 loss.backward()
                 optimizer.step()
@@ -284,11 +268,7 @@ class GCLPipeline:
                 _, z1, z2 = encoder_model(
                     dataset.x.to(device),
                     dataset.edge_index.to(device),
-                    (
-                        dataset.edge_attr.to(device)
-                        if dataset.edge_attr is not None
-                        else None
-                    ),
+                    (dataset.edge_attr.to(device) if dataset.edge_attr is not None else None),
                 )
                 h1, h2 = [encoder_model.project(x) for x in [z1, z2]]
                 loss = self.contrast_model(h1, h2)
@@ -326,27 +306,17 @@ class GCLPipeline:
         match self.method:
 
             case "TransductiveDGI":
-                z, _, _ = encoder_model(
-                    dataset.x.to(device), dataset.edge_index.to(device)
-                )
-                split = get_split(
-                    num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8
-                )
+                z, _, _ = encoder_model(dataset.x.to(device), dataset.edge_index.to(device))
+                split = get_split(num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8)
                 result = LREvaluator()(z, dataset.y, split)
 
             case "GRACE":
                 z, _, _ = encoder_model(
                     dataset.x.to(device),
                     dataset.edge_index.to(device),
-                    (
-                        dataset.edge_attr.to(device)
-                        if dataset.edge_attr is not None
-                        else None
-                    ),
+                    (dataset.edge_attr.to(device) if dataset.edge_attr is not None else None),
                 )
-                split = get_split(
-                    num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8
-                )
+                split = get_split(num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8)
                 result = LREvaluator()(z, dataset.y, split)
 
             case "InfoGraph":
@@ -367,9 +337,7 @@ class GCLPipeline:
                 x = torch.cat(x, dim=0)
                 y = torch.cat(y, dim=0)
 
-                split = get_split(
-                    num_samples=x.size()[0], train_ratio=0.8, test_ratio=0.1
-                )
+                split = get_split(num_samples=x.size()[0], train_ratio=0.8, test_ratio=0.1)
                 result = SVMEvaluator(linear=True)(x, y, split)
 
         return result

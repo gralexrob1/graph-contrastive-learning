@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import GCNConv, GINConv, SAGEConv, global_add_pool
 
-
 """
 DGI Inductive
 """
@@ -82,9 +81,7 @@ InfoGraph
 
 def make_gin_conv(input_dim, out_dim):
     return GINConv(
-        nn.Sequential(
-            nn.Linear(input_dim, out_dim), nn.ReLU(), nn.Linear(out_dim, out_dim)
-        )
+        nn.Sequential(nn.Linear(input_dim, out_dim), nn.ReLU(), nn.Linear(out_dim, out_dim))
     )
 
 
