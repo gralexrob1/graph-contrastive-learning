@@ -1,0 +1,81 @@
+{
+    "config": {
+        "try_gpu": true
+    },
+    "_strategies": [
+        {
+            "_dataset": [
+                "Cora",
+                "PTC_MR"
+            ],
+            "_method": [
+                "InductiveDGI",
+                "TransductiveDGI",
+                "GRACE",
+                "InfoGraph"
+            ],
+            "_architecture": [
+                "SingleBranch",
+                "DualBranch",
+                "BootstrapBranch",
+                "WithinEmbed"
+            ],
+            "_mode": [
+                "L2L",
+                "G2L",
+                "G2G"
+            ],
+            "_negative": null,
+            "_objective": [
+                "InfoNCE",
+                "JSD",
+                "Triplet",
+                "BootstrapLatent",
+                "BarlowTwins",
+                "VICReg"
+            ],
+            "_augmentation1": [
+                "EdgeRemoving",
+                "FeatureMasking"
+            ],
+            "_augmentation1_agg": [
+                "Compose",
+                "Random"
+            ],
+            "_augmentation2": [
+                "EdgeRemoving",
+                "FeatureMasking"
+            ],
+            "_augmentation2_agg": [
+                "Compose",
+                "Random"
+            ]
+        }
+    ],
+    "strategies": [
+        {
+            "_descr": "TRANSDGI - G2L - JSD",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "TransductiveDGI",
+            "architecture": "SingleBranch",
+            "mode": "G2L",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": null,
+            "augmentation1_strat": "Compose",
+            "augmentation2": null,
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 512,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 300
+            }
+        }
+    ]
+}
