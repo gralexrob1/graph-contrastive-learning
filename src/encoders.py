@@ -1,6 +1,10 @@
+import logging
+
 import torch
 import torch.nn.functional as F
 from torch_geometric.nn import inits
+
+logger = logging.getLogger(__name__)
 
 """
 DGI
@@ -33,6 +37,11 @@ GRACE
 class GRACEEncoder(torch.nn.Module):
     def __init__(self, encoder, augmentor, hidden_dim, proj_dim):
         super(GRACEEncoder, self).__init__()
+
+        logger.info("CALL GRACEEncoder")
+        logger.info(f"Encoder: {encoder}")
+        logger.info(f"Augmentor: {augmentor}")
+
         self.encoder = encoder
         self.augmentor = augmentor
 
@@ -54,6 +63,32 @@ class GRACEEncoder(torch.nn.Module):
 
 
 """
+GraphCL
+"""
+
+
+class GraphCLEncoder(torch.nn.Module):
+    def __init__(self, encoder, augmentor):
+        super(GraphCLEncoder, self).__init__()
+
+        logger.info("CALL GraphCLEncoder")
+        logger.info(f"Encoder: {encoder}")
+        logger.info(f"Augmentor: {augmentor}")
+
+        self.encoder = encoder
+        self.augmentor = augmentor
+
+    def forward(self, x, edge_index, batch):
+        aug1, aug2 = self.augmentor
+        x1, edge_index1, edge_weight1 = aug1(x, edge_index)
+        x2, edge_index2, edge_weight2 = aug2(x, edge_index)
+        z, g = self.encoder(x, edge_index, batch)
+        z1, g1 = self.encoder(x1, edge_index1, batch)
+        z2, g2 = self.encoder(x2, edge_index2, batch)
+        return z, g, z1, z2, g1, g2
+
+
+"""
 InfoGraph
 """
 
@@ -70,4 +105,5 @@ class InfoGraphEncoder(torch.nn.Module):
         return z, g
 
     def project(self, z, g):
+        return self.local_fc(z), self.global_fc(g)
         return self.local_fc(z), self.global_fc(g)

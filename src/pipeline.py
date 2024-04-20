@@ -1,3 +1,5 @@
+import logging
+
 import GCL.augmentors as A
 import GCL.losses as L
 import GCL.models as M
@@ -6,14 +8,17 @@ from GCL.eval import LREvaluator, SVMEvaluator, get_split
 from torch_geometric.datasets import Planetoid, TUDataset
 from torch_geometric.loader import DataLoader
 
-from encoders import DGIEncoder, GRACEEncoder, InfoGraphEncoder
+from encoders import DGIEncoder, GRACEEncoder, GraphCLEncoder, InfoGraphEncoder
 from gconv import (
     FC,
     DGIInductiveGConv,
     DGITransductiveGConv,
     GRACEGConv,
+    GraphCLGConv,
     InfoGraphGConv,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GCLPipeline:
@@ -26,7 +31,7 @@ class GCLPipeline:
     @staticmethod
     def init_dataset(dataset_name, data_path, transform=None, batch_size=False):
 
-        print("Dataset initialization")
+        logger.info("CALL GCLPipeline.init_dataset")
 
         match dataset_name:
 
@@ -44,7 +49,7 @@ class GCLPipeline:
                 if batch_size > 0:
                     dataset = DataLoader(dataset, batch_size=batch_size)
 
-        print(f"\t # features: {num_features}")
+        logger.info(f"\t Number of features: {num_features}")
 
         return dataset, num_features
 
@@ -81,64 +86,74 @@ class GCLPipeline:
                 raise NameError(f"Unknown strategy name: {architecture_name}")
 
     @staticmethod
-    def init_augmentation(augmentation_name):
-        match augmentation_name:
+    def init_augmentation(name, params=None):
+        logger.info("CALL GCLPipeline.init_augmentation")
+        logger.info(f"\t Name: {name}")
+        match name:
             case "EdgeAdding":
-                return A.EdgeAdding(pe=0.2)
-            case "EdgeRemoving":
-                return A.EdgeRemoving(pe=0.1)
-            case "FeatureMasking":
-                return A.FeatureMasking(pf=0.2)
-            case "FeatureDropout":
-                return A.FeatureDropout(pf=0.2)
+                return A.EdgeAdding() if params is None else A.EdgeAdding(**params)
             case "EdgeAttrMasking":
-                return A.EdgeAttrMasking(pf=0.1)
-            case "PPRDiffusion":
-                return A.PPRDiffusion()
-            case "MDK":
-                return A.MarkovDiffusion()
-            case "NodeDropping":
-                return A.NodeDropping(pn=0.2)
-            case "NodeShuffling":
-                return A.NodeShuffling()
-            case "RWSampling":
-                return A.RWSampling()
+                return A.EdgeAttrMasking() if params is None else A.EdgeAttrMasking(**params)
+            case "EdgeRemoving":
+                return A.EdgeRemoving() if params is None else A.EdgeRemoving(**params)
             case "EgoNet":
-                return A.Identity()
+                return A.Identity() if params is None else A.Identity(**params)
+            case "FeatureDropout":
+                return A.FeatureDropout() if params is None else A.FeatureDropout(**params)
+            case "FeatureMasking":
+                return A.FeatureMasking() if params is None else A.FeatureMasking(**params)
+            case "Identity":
+                return A.Identity() if params is None else A.Identity(**params)
+            case "MDK":
+                return A.MarkovDiffusion() if params is None else A.MarkovDiffusion(**params)
+            case "NodeDropping":
+                return A.NodeDropping() if params is None else A.NodeDropping(**params)
+            case "NodeShuffling":
+                return A.NodeShuffling() if params is None else A.NodeShuffling(**params)
+            case "PPRDiffusion":
+                return A.PPRDiffusion() if params is None else A.PPRDiffusion(**params)
+            case "RWSampling":
+                return A.RWSampling() if params is None else A.RWSampling(**params)
             case _:
-                raise NameError(f"Unknown augmentation name: {augmentation_name}")
+                raise NotImplementedError(f"Unknown augmentation name: {name}")
 
     @staticmethod
-    def init_augmentations(augmentation_names, augmentation_strategy):
+    def init_augmentations(augmentation, strategy):
 
-        if isinstance(augmentation_names, list):
+        logger.info("CALL GCLPipeline.init_augmentations")
+        logger.info(f"\t Strategy: {strategy}")
+
+        if isinstance(augmentation, list):
             augmentations = []
-            for augmentation_name in augmentation_names:
-                augmentations.append(GCLPipeline.init_augmentation(augmentation_name))
-            match augmentation_strategy:
+            for a in augmentation:
+                augmentations.append(GCLPipeline.init_augmentation(a["name"], a["params"]))
+            match strategy:
                 case "Random":
-                    return A.RandomChoice(augmentations)
+                    return A.RandomChoice(augmentations, 1)
                 case "Compose":
                     return A.Compose(augmentations)
         else:
-            return GCLPipeline.init_augmentation(augmentation_name)
+            return GCLPipeline.init_augmentation(augmentation["name"], augmentation["params"])
 
     @classmethod
     def from_strategy(cls, strategy, device):
 
         method_name = strategy["method"]
 
-        print(f"##### {method_name} #####")
+        logger.info(f"##### {method_name} #####")
 
         architecture_name = strategy["architecture"]
         mode_name = strategy["mode"]
         negative_name = strategy["negative"]
         objective_name = strategy["objective"]
 
-        augmentation1_names = strategy["augmentation1"]
-        augmentation1_strategy = strategy["augmentation1_strat"]
-        augmentation2_names = strategy["augmentation2"]
-        augmentation2_strategy = strategy["augmentation1_strat"]
+        augmentations1 = strategy["augmentation1"]
+        augmentations1_strategy = strategy["augmentation1_strat"]
+        augmentations2 = strategy["augmentation2"]
+        augmentations2_strategy = strategy["augmentation2_strat"]
+
+        logger.info(f"\t Augmentation strategy 1: {augmentations1_strategy}")
+        logger.info(f"\t Augmentation strategy 2: {augmentations2_strategy}")
 
         assert not (architecture_name == "SingleBranch" and mode_name != "G2L")
         assert not (
@@ -156,16 +171,17 @@ class GCLPipeline:
 
         augmentations = [
             (
-                GCLPipeline.init_augmentations(augmentation1_names, augmentation1_strategy)
-                if augmentation1_names is not None
+                GCLPipeline.init_augmentations(augmentations1, augmentations1_strategy)
+                if augmentations1 is not None
                 else None
             ),
             (
-                GCLPipeline.init_augmentations(augmentation2_names, augmentation2_strategy)
-                if augmentation2_names is not None
+                GCLPipeline.init_augmentations(augmentations2, augmentations2_strategy)
+                if augmentations2 is not None
                 else None
             ),
         ]
+        logging.info(f"Augmentations: {augmentations}")
 
         instance = cls(method_name, contrast_model, augmentations, negative_name)
 
@@ -173,7 +189,7 @@ class GCLPipeline:
 
     def init_encoder(self, params, device):
 
-        print("Encoder initialization")
+        logger.info("CALL GCLPipeline.init_encoder")
 
         input_dim = params["input_dim"]
         hidden_dim = params["hidden_dim"]
@@ -189,11 +205,11 @@ class GCLPipeline:
                 ValueError(f"Activation function '{params['activation']}' not found in torch.nn"),
             )
 
-        print(f"\t input dim: {input_dim}")
-        print(f"\t hidden dim: {hidden_dim}")
-        print(f"\t # layers: {num_layers}")
-        print(f"\t projection dim: {proj_dim}")
-        print(f"\t activation: {activation}")
+        logger.info(f"\t Input dimension: {input_dim}")
+        logger.info(f"\t Hidden dimension: {hidden_dim}")
+        logger.info(f"\t Number of layers: {num_layers}")
+        logger.info(f"\t Projection dimension: {proj_dim}")
+        logger.info(f"\t Activation: {activation}")
 
         augmentor1 = self.augmentations[0]
         augmentor2 = self.augmentations[1]
@@ -224,6 +240,17 @@ class GCLPipeline:
                     augmentor=(augmentor1, augmentor2),
                     hidden_dim=hidden_dim,
                     proj_dim=proj_dim,
+                ).to(device)
+
+            case "GraphCL":
+                gconv = GraphCLGConv(
+                    input_dim=input_dim,
+                    hidden_dim=32,
+                    num_layers=2,
+                ).to(device)
+                encoder_model = GraphCLEncoder(
+                    encoder=gconv,
+                    augmentor=(augmentor1, augmentor2),
                 ).to(device)
 
             case "InfoGraph":
@@ -276,6 +303,27 @@ class GCLPipeline:
                 optimizer.step()
                 epoch_loss = loss.item()
 
+            case "GraphCL":
+                epoch_loss = 0
+                for data in dataset:
+                    data = data.to(device)
+                    optimizer.zero_grad()
+
+                    if data.x is None:
+                        num_nodes = data.batch.size(0)
+                        data.x = torch.ones(
+                            (num_nodes, 1),
+                            dtype=torch.float32,
+                            device=data.batch.device,
+                        )
+
+                    _, _, _, _, g1, g2 = encoder_model(data.x, data.edge_index, data.batch)
+                    g1, g2 = [encoder_model.encoder.project(g) for g in [g1, g2]]
+                    loss = self.contrast_model(g1=g1, g2=g2, batch=data.batch)
+                    loss.backward()
+                    optimizer.step()
+                    epoch_loss += loss.item()
+
             case "InfoGraph":
                 epoch_loss = 0
                 for data in dataset:
@@ -319,6 +367,27 @@ class GCLPipeline:
                 split = get_split(num_samples=z.size()[0], train_ratio=0.1, test_ratio=0.8)
                 result = LREvaluator()(z, dataset.y, split)
 
+            case "GraphCL":
+                x = []
+                y = []
+                for data in dataset:
+                    data = data.to(device)
+                    if data.x is None:
+                        num_nodes = data.batch.size(0)
+                        data.x = torch.ones(
+                            (num_nodes, 1),
+                            dtype=torch.float32,
+                            device=data.batch.device,
+                        )
+                    _, g, _, _, _, _ = encoder_model(data.x, data.edge_index, data.batch)
+                    x.append(g)
+                    y.append(data.y)
+                x = torch.cat(x, dim=0)
+                y = torch.cat(y, dim=0)
+
+                split = get_split(num_samples=x.size()[0], train_ratio=0.8, test_ratio=0.1)
+                result = SVMEvaluator(linear=True)(x, y, split)
+
             case "InfoGraph":
                 x = []
                 y = []
@@ -341,9 +410,5 @@ class GCLPipeline:
                 result = SVMEvaluator(linear=True)(x, y, split)
 
         return result
-
-    def train(self, dataloader, encoder_model, optimizer):
-        raise NotImplementedError
-
-    def evaluate(self):
-        raise NotImplementedError()
+        return result
+        return result

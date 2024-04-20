@@ -1,0 +1,136 @@
+{
+    "_config": {
+        "_try_gpu": [
+            true,
+            false
+        ]
+    },
+    "_strategies": [
+        {
+            "_dataset": [
+                "Cora",
+                "PTC_MR"
+            ],
+            "_method": [
+                "InductiveDGI",
+                "TransductiveDGI",
+                "GRACE",
+                "InfoGraph"
+            ],
+            "_architecture": [
+                "SingleBranch",
+                "DualBranch",
+                "BootstrapBranch",
+                "WithinEmbed"
+            ],
+            "_mode": [
+                "L2L",
+                "G2L",
+                "G2G"
+            ],
+            "_negative": null,
+            "_objective": [
+                "InfoNCE",
+                "JSD",
+                "Triplet",
+                "BootstrapLatent",
+                "BarlowTwins",
+                "VICReg"
+            ],
+            "_augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {}
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {}
+                },
+                {
+                    "name": "EdgeAttrMasking",
+                    "params": {}
+                },
+                {
+                    "name": "FeatureDropout",
+                    "params": {}
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {}
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {}
+                },
+                {
+                    "name": "NodeShuffling",
+                    "params": {}
+                },
+                {
+                    "name": "PPRDiffusion",
+                    "params": {}
+                },
+                {
+                    "name": "RWSampling",
+                    "params": {}
+                }
+            ],
+            "_augmentation1_agg": [
+                "Compose",
+                "Random"
+            ],
+            "_augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {}
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {}
+                },
+                {
+                    "name": "EdgeAttrMasking",
+                    "params": {}
+                },
+                {
+                    "name": "FeatureDropout",
+                    "params": {}
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {}
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {}
+                },
+                {
+                    "name": "NodeShuffling",
+                    "params": {}
+                },
+                {
+                    "name": "PPRDiffusion",
+                    "params": {}
+                },
+                {
+                    "name": "RWSampling",
+                    "params": {}
+                }
+            ],
+            "_augmentation2_agg": [
+                "Compose",
+                "Random"
+            ],
+            "_encoder_params": {
+                "_hidden_dim": null,
+                "_num_layers": null,
+                "_proj_dim": null,
+                "_activation": null
+            },
+            "_train_params": {
+                "_learning_rate": null,
+                "_epochs": null
+            }
+        }
+    ]
+}
