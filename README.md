@@ -132,3 +132,15 @@ Meeting every 2 weeks until January then more intensive
 - [x] GraphSAGE
 - :white_check_mark: test  
 :white_check_mark: test
+
+
+# Datasets
+
+- **ogbn-proteins**
+The ogbn-proteins dataset is an undirected, weighted, and typed (according to species) graph. Nodes represent proteins, and edges indicate different types of biologically meaningful associations between proteins, e.g., physical interactions, co-expression or homology [1,2]. All edges come with 8-dimensional features, where each dimension represents the approximate confidence of a single association type and takes values between 0 and 1 (the larger the value is, the more confident we are about the association). The proteins come from 8 species.
+
+- **ogbl-ppa**
+The ogbl-ppa dataset is an undirected, unweighted graph. Nodes represent proteins from 58 different species, and edges indicate biologically meaningful associations between proteins, e.g., physical interactions, co-expression, homology or genomic neighborhood [1]. We provide a graph object constructed from training edges (no validation and test edges are contained). Each node contains a 58-dimensional one-hot feature vector that indicates the species that the corresponding protein comes from.
+
+- **ogbl-ddi**
+The ogbl-ddi dataset is a homogeneous, unweighted, undirected graph, representing the drug-drug interaction network [1]. Each node represents an FDA-approved or experimental drug. Edges represent interactions between drugs and can be interpreted as a phenomenon where the joint effect of taking the two drugs together is considerably different from the expected effect in which drugs act independently of each other.
