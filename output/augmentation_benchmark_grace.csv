@@ -1,0 +1,13 @@
+Data,Method,Archi,Mode,Obj,Neg,Aug1,Aug1Strat,Aug2,Aug2Strat,MicroF1,MacroF1
+Cora,GRACE,DualBranch,L2L,InfoNCE,,"EdgeRemoving, FeatureMasking",Compose,"EdgeRemoving, FeatureMasking",Compose,0.76,0.75
+Cora,GRACE,DualBranch,L2L,InfoNCE,,EdgeRemoving,Compose,"EdgeRemoving, FeatureMasking",Compose,0.77,0.77
+Cora,GRACE,DualBranch,L2L,InfoNCE,,"EdgeRemoving, FeatureMasking, NodeDropping",Compose,"EdgeRemoving, FeatureMasking",Compose,0.76,0.75
+Cora,GRACE,DualBranch,L2L,JSD,,"EdgeRemoving, FeatureMasking",Compose,"EdgeRemoving, FeatureMasking",Compose,0.63,0.61
+Cora,GRACE,DualBranch,L2L,JSD,,EdgeRemoving,Compose,"EdgeRemoving, FeatureMasking",Compose,0.78,0.74
+Cora,GRACE,DualBranch,L2L,JSD,,"EdgeRemoving, FeatureMasking, NodeDropping",Compose,"EdgeRemoving, FeatureMasking",Compose,0.66,0.58
+Cora,GRACE,DualBranch,L2L,BarlowTwins,,"EdgeRemoving, FeatureMasking",Compose,"EdgeRemoving, FeatureMasking",Compose,0.82,0.78
+Cora,GRACE,DualBranch,L2L,BarlowTwins,,EdgeRemoving,Compose,"EdgeRemoving, FeatureMasking",Compose,0.76,0.74
+Cora,GRACE,DualBranch,L2L,BarlowTwins,,"EdgeRemoving, FeatureMasking, NodeDropping",Compose,"EdgeRemoving, FeatureMasking",Compose,0.8,0.77
+Cora,GRACE,DualBranch,L2L,BootstrapLatent,,"EdgeRemoving, FeatureMasking",Compose,"EdgeRemoving, FeatureMasking",Compose,0.42,0.33
+Cora,GRACE,DualBranch,L2L,BootstrapLatent,,EdgeRemoving,Compose,"EdgeRemoving, FeatureMasking",Compose,0.43,0.29
+Cora,GRACE,DualBranch,L2L,BootstrapLatent,,"EdgeRemoving, FeatureMasking, NodeDropping",Compose,"EdgeRemoving, FeatureMasking",Compose,0.4,0.27
