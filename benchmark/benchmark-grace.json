@@ -4,7 +4,7 @@
     },
     "strategies": [
         {
-            "_descr": "GRACE - L2L - INFONCE",
+            "_descr": "GRACE - L2L - INFONCE - Default",
             "dataset": "Cora",
             "batch_size": 0,
             "method": "GRACE",
@@ -23,6 +23,574 @@
                     "name": "FeatureMasking",
                     "params": {
                         "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - INFONCE - No Feature Masking",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+        {
+            "_descr": "GRACE - L2L - INFONCE - With Node Dropping",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - JSD - Default",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - JSD - No Feature Masking",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+        {
+            "_descr": "GRACE - L2L - JSD - With Node Dropping",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - BarlowTwins - Default",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - BarlowTwins - No Feature Masking",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+        {
+            "_descr": "GRACE - L2L - BarlowTwins - With Node Dropping",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - BSL - Default",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BootstrapLatent",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+
+        {
+            "_descr": "GRACE - L2L - BSL - No Feature Masking",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BootstrapLatent",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                }
+            ],
+            "augmentation1_strat": "Compose",
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                }
+            ],
+            "augmentation2_strat": "Compose",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": 32,
+                "activation": "ReLU"
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 1000
+            }
+        },
+
+        {
+            "_descr": "GRACE - L2L - BSL - With Node Dropping",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "GRACE",
+            "architecture": "DualBranch",
+            "mode": "L2L",
+            "objective": "BootstrapLatent",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.3
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.3
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.3
                     }
                 }
             ],
