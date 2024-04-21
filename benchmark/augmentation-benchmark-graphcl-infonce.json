@@ -1,0 +1,986 @@
+{
+    "config": {
+        "try_gpu": true
+    },
+    "strategies": [
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Identity/Identity ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Identity/AttrMask ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Identity/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Identity/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Identity/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - AttrMask/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - AttrMask/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - AttrMask/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - AttrMask/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - AttrMask/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - EdgePert/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation1_strat": "Random",
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - EdgePert/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation1_strat": "Random",
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - EdgePert/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation1_strat": "Random",
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - EdgePert/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation1_strat": "Random",
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - EdgePert/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation1_strat": "Random",
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Subgraph/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Subgraph/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Subgraph/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Subgraph/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - Subgraph/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - NodeDrop/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - NodeDrop/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - NodeDrop/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - NodeDrop/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - INFONCE - NodeDrop/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "GRAPHCL - G2G - INFONCE - Identity/Random",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeAdding",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.2
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.2
+                    }
+                },
+                {
+                    "name": "RWSampling",
+                    "params": {
+                        "num_seeds": 1000,
+                        "walk_length": 10
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        }
+    ]
+}
