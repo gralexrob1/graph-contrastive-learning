@@ -138,9 +138,11 @@ class GCLPipeline:
     @classmethod
     def from_strategy(cls, strategy, device):
 
+        logger.info("CALL GCLPipeline.from_strategy")
+
         method_name = strategy["method"]
 
-        logger.info(f"##### {method_name} #####")
+        logger.info(f"\t Method: {method_name}")
 
         architecture_name = strategy["architecture"]
         mode_name = strategy["mode"]
