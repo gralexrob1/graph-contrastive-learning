@@ -1,0 +1,900 @@
+{
+    "config": {
+        "try_gpu": true
+    },
+    "strategies": [
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Identity/Identity ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Identity/AttrMask ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Identity/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Identity/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Identity/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - AttrMask/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - AttrMask/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - AttrMask/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - AttrMask/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - AttrMask/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - EdgePert/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - EdgePert/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - EdgePert/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - EdgePert/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - EdgePert/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Subgraph/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Subgraph/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Subgraph/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Subgraph/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - Subgraph/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - NodeDrop/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - NodeDrop/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - NodeDrop/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - NodeDrop/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - JSD - NodeDrop/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "GRAPHCL - G2G - JSD - Identity/Random",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.2
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.2
+                    }
+                },
+                {
+                    "name": "RWSampling",
+                    "params": {
+                        "num_seeds": 1000,
+                        "walk_length": 10
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        }
+    ]
+}
