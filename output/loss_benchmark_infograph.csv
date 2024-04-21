@@ -1,0 +1,3 @@
+Data,Method,Archi,Mode,Obj,Neg,Aug1,Aug1Strat,Aug2,Aug2Strat,MicroF1,MacroF1
+PTC_MR,InfoGraph,SingleBranch,G2L,InfoNCE,,,,,,0.51,0.5
+PTC_MR,InfoGraph,SingleBranch,G2L,JSD,,,,,,0.51,0.42

@@ -211,7 +211,7 @@ class GCLPipeline:
         logger.info(f"\t Hidden dimension: {hidden_dim}")
         logger.info(f"\t Number of layers: {num_layers}")
         logger.info(f"\t Projection dimension: {proj_dim}")
-        logger.info(f"\t Activation: {activation}")
+        logger.info(f"\t Activation: {activation if activation is None else activation.__name__}")
 
         augmentor1 = self.augmentations[0]
         augmentor2 = self.augmentations[1]
