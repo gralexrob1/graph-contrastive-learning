@@ -16,6 +16,8 @@ def cross_augmentation_plot(df, title=None, savefig=None):
         fmt=".2f",
         cmap="coolwarm",
         center=pivot_data_mean.values.mean(),
+        vmin=40,
+        vmax=70,
     )
 
     for i in range(len(pivot_data_mean.index)):
