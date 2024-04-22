@@ -1,0 +1,900 @@
+{
+    "config": {
+        "try_gpu": true
+    },
+    "strategies": [
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Identity/Identity ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Identity/AttrMask ##########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Identity/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Identity/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Identity/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - AttrMask/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - AttrMask/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - AttrMask/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - AttrMask/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - AttrMask/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - EdgePert/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - EdgePert/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - EdgePert/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - EdgePert/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - EdgePert/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Subgraph/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Subgraph/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Subgraph/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Subgraph/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - Subgraph/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - NodeDrop/Identity #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - NodeDrop/AttrMask #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "FeatureMasking",
+                "params": {
+                    "pf": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - NodeDrop/EdgePert #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "EdgeRemoving",
+                "params": {
+                    "pe": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - NodeDrop/Subgraph #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "RWSampling",
+                "params": {
+                    "num_seeds": 1000,
+                    "walk_length": 10
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "########## GRAPHCL - G2G - BarlowTwins - NodeDrop/NodeDrop #########",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation1_strat": null,
+            "augmentation2": {
+                "name": "NodeDropping",
+                "params": {
+                    "pn": 0.2
+                }
+            },
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        },
+        {
+            "_descr": "GRAPHCL - G2G - BarlowTwins - Identity/Random",
+            "dataset": "PTC_MR",
+            "batch_size": 128,
+            "method": "GraphCL",
+            "architecture": "DualBranch",
+            "mode": "G2G",
+            "objective": "BarlowTwins",
+            "negative": null,
+            "augmentation1": {
+                "name": "Identity",
+                "params": null
+            },
+            "augmentation1_strat": null,
+            "augmentation2": [
+                {
+                    "name": "EdgeRemoving",
+                    "params": {
+                        "pe": 0.2
+                    }
+                },
+                {
+                    "name": "FeatureMasking",
+                    "params": {
+                        "pf": 0.2
+                    }
+                },
+                {
+                    "name": "NodeDropping",
+                    "params": {
+                        "pn": 0.2
+                    }
+                },
+                {
+                    "name": "RWSampling",
+                    "params": {
+                        "num_seeds": 1000,
+                        "walk_length": 10
+                    }
+                }
+            ],
+            "augmentation2_strat": "Random",
+            "encoder_params": {
+                "hidden_dim": 32,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 100
+            }
+        }
+    ]
+}
