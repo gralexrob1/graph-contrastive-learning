@@ -164,3 +164,4 @@ data/*
 dataset/*
 notebooks/data/*
 notebooks/dataset/*
+ogb-proteins-node2vec/dataset
