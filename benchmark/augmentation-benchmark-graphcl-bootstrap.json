@@ -844,7 +844,7 @@
             }
         },
         {
-            "_descr": "GRAPHCL - G2G - BootstrapLatent - Identity/Random",
+            "_descr": "########## GRAPHCL - G2G - BootstrapLatent - Identity/Random ##########",
             "dataset": "PTC_MR",
             "batch_size": 128,
             "method": "GraphCL",
