@@ -1,0 +1,79 @@
+{
+    "config": {
+        "try_gpu": true
+    },
+    "strategies": [
+        {
+            "_descr": "##########TRANSDGI - G2L - InfoNCE ##########",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "TransductiveDGI",
+            "architecture": "SingleBranch",
+            "mode": "G2L",
+            "objective": "InfoNCE",
+            "negative": null,
+            "augmentation1": null,
+            "augmentation1_strat": null,
+            "augmentation2": null,
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 512,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 300
+            }
+        },
+        {
+            "_descr": "##########TRANSDGI - G2L - JSD ##########",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "TransductiveDGI",
+            "architecture": "SingleBranch",
+            "mode": "G2L",
+            "objective": "JSD",
+            "negative": null,
+            "augmentation1": null,
+            "augmentation1_strat": null,
+            "augmentation2": null,
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 512,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 300
+            }
+        },
+        {
+            "_descr": "##########TRANSDGI - G2L - BootstrapLatent ##########",
+            "dataset": "Cora",
+            "batch_size": 0,
+            "method": "TransductiveDGI",
+            "architecture": "SingleBranch",
+            "mode": "G2L",
+            "objective": "BootstrapLatent",
+            "negative": null,
+            "augmentation1": null,
+            "augmentation1_strat": null,
+            "augmentation2": null,
+            "augmentation2_strat": null,
+            "encoder_params": {
+                "hidden_dim": 512,
+                "num_layers": 2,
+                "proj_dim": null,
+                "activation": null
+            },
+            "train_params": {
+                "learning_rate": 0.01,
+                "epochs": 300
+            }
+        }
+    ]
+}
