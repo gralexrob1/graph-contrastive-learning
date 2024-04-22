@@ -8,6 +8,7 @@ from GCL.eval import LREvaluator, SVMEvaluator, get_split
 from torch_geometric.datasets import Planetoid, TUDataset
 from torch_geometric.loader import DataLoader
 
+from data_manager import generate_ogbn_proteins_dataset
 from encoders import DGIEncoder, GRACEEncoder, GraphCLEncoder, InfoGraphEncoder
 from gconv import (
     FC,
@@ -48,6 +49,10 @@ class GCLPipeline:
                 num_features = dataset.num_features
                 if batch_size > 0:
                     dataset = DataLoader(dataset, batch_size=batch_size)
+
+            case "ogb-proteins":
+                dataset = generate_ogbn_proteins_dataset()
+                num_features = dataset.num_features
 
         logger.info(f"\t Number of features: {num_features}")
 
